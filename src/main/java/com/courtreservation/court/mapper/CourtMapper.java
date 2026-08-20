@@ -7,7 +7,7 @@ import com.courtreservation.court.model.Sport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = ScheduleMapper.class)
+@Mapper(componentModel = "spring", uses = {ScheduleMapper.class, SportMapper.class})
 public interface CourtMapper {
 
   @Mapping(target = "courtId", source = "id")
@@ -15,6 +15,7 @@ public interface CourtMapper {
   @Mapping(target = "courtDescription", source = "description")
   @Mapping(target = "courtCapacity", source = "capacity")
   @Mapping(target = "courtSportId", source = "sport.id")
+  @Mapping(target = "courtSport", source = "sport")
   @Mapping(target = "courtPrice", source = "price")
   @Mapping(target = "courtSchedules", source = "schedules")
   CourtDto toDto(Court court);

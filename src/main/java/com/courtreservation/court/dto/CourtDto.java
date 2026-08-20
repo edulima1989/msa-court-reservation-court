@@ -17,6 +17,7 @@ public class CourtDto {
   private String courtDescription;
   private Integer courtCapacity;
   private Long courtSportId;
+  private SportDto courtSport;
   private BigDecimal courtPrice;
   private List<ScheduleDto> courtSchedules;
 }
