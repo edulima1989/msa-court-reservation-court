@@ -13,6 +13,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#        use_sql_comments: true
 
 server:
   port: 8081
@@ -31,3 +33,12 @@ app:
       - http://localhost:3000
       - http://localhost:4200
       - http://localhost:8080
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        orm:
+#          results:
+#            mapping: TRACE

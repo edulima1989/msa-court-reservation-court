@@ -8,6 +8,8 @@ import com.courtreservation.court.model.Sport;
 import com.courtreservation.court.repository.CourtRepository;
 import com.courtreservation.court.repository.SportRepository;
 import com.courtreservation.court.service.CourtService;
+
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,12 @@ public class CourtServiceImpl implements CourtService {
   @Override
   public List<CourtDto> findAll() {
     return courtRepository.findAll().stream().map(courtMapper::toDto).toList();
+  }
+
+  @Override
+  public List<CourtDto> findAvailableCourts(LocalDate date) {
+    System.out.println(date.getDayOfWeek());
+    return courtRepository.findCourtsWithScheduleByDay(date.getDayOfWeek().name()).stream().map(courtMapper::toDto).toList();
   }
 
   @Override
