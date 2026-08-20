@@ -1,6 +1,7 @@
 package com.courtreservation.court.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class CourtDto {
   private Integer courtCapacity;
   private Long courtSportId;
   private BigDecimal courtPrice;
+  private List<ScheduleDto> courtSchedules;
 }

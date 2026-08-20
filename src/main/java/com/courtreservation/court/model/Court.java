@@ -8,8 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,4 +48,8 @@ public class Court {
 
   @Column(name = "court_price", nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
+
+  @Builder.Default
+  @OneToMany(mappedBy = "court", fetch = FetchType.LAZY)
+  private List<Schedule> schedules = new ArrayList<>();
 }
