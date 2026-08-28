@@ -7,7 +7,7 @@ import com.courtreservation.court.model.Sport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {ScheduleMapper.class, SportMapper.class})
+@Mapper(componentModel = "spring", uses = {ScheduleMapper.class, SportMapper.class, MaintenanceBlockMapper.class})
 public interface CourtMapper {
 
   @Mapping(target = "courtId", source = "id")
@@ -17,7 +17,9 @@ public interface CourtMapper {
   @Mapping(target = "courtSportId", source = "sport.id")
   @Mapping(target = "courtSport", source = "sport")
   @Mapping(target = "courtPrice", source = "price")
+  @Mapping(target = "courtActive", source = "active")
   @Mapping(target = "courtSchedules", source = "schedules")
+  @Mapping(target = "courtMaintenanceBlocks", source = "maintenanceBlocks")
   CourtDto toDto(Court court);
 
   @Mapping(target = "id", source = "dto.courtId")
@@ -26,7 +28,9 @@ public interface CourtMapper {
   @Mapping(target = "capacity", source = "dto.courtCapacity")
   @Mapping(target = "sport", source = "sport")
   @Mapping(target = "price", source = "dto.courtPrice")
+  @Mapping(target = "active", ignore = true)
   @Mapping(target = "schedules", ignore = true)
+  @Mapping(target = "maintenanceBlocks", ignore = true)
   Court toEntity(CourtDto dto, Sport sport);
 
   @Mapping(target = "id", ignore = true)
@@ -35,6 +39,8 @@ public interface CourtMapper {
   @Mapping(target = "capacity", source = "dto.courtCapacity")
   @Mapping(target = "sport", source = "sport")
   @Mapping(target = "price", source = "dto.courtPrice")
+  @Mapping(target = "active", ignore = true)
   @Mapping(target = "schedules", ignore = true)
+  @Mapping(target = "maintenanceBlocks", ignore = true)
   Court toEntity(CreateCourtDto dto, Sport sport);
 }

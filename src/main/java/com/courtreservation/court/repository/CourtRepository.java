@@ -3,6 +3,7 @@ package com.courtreservation.court.repository;
 import com.courtreservation.court.model.Court;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,9 +21,17 @@ public interface CourtRepository extends JpaRepository<Court, Long> {
     FROM Court c
     JOIN FETCH c.schedules s
     WHERE s.day = :day
+      AND c.active = true
+      AND NOT EXISTS (
+        SELECT 1
+        FROM MaintenanceBlock m
+        WHERE m.court = c
+          AND :date BETWEEN m.startDate AND m.endDate
+      )
     ORDER BY c.id   \s
    \s""")
   List<Court> findCourtsWithScheduleByDay(
-          @Param("day") String day
+          @Param("day") String day,
+          @Param("date") LocalDate date
           );
 }

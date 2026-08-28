@@ -1,5 +1,6 @@
 package com.courtreservation.court.controller;
 
+import com.courtreservation.court.dto.CourtActiveDto;
 import com.courtreservation.court.dto.CreateCourtDto;
 import com.courtreservation.court.dto.CourtDto;
 import com.courtreservation.court.service.CourtService;
@@ -63,6 +64,18 @@ public class CourtController {
   })
   public CourtDto update(@Parameter(description = "ID de la cancha") @PathVariable Long id, @RequestBody CourtDto dto) {
     return courtService.update(id, dto);
+  }
+
+  @PatchMapping("/{id}/active")
+  @Operation(summary = "Activar o inactivar una cancha")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Estado de la cancha actualizado"),
+      @ApiResponse(responseCode = "404", description = "Cancha no encontrada")
+  })
+  public CourtDto updateActive(
+      @Parameter(description = "ID de la cancha") @PathVariable Long id,
+      @RequestBody CourtActiveDto dto) {
+    return courtService.updateActive(id, Boolean.TRUE.equals(dto.getCourtActive()));
   }
 
   @DeleteMapping("/{id}")

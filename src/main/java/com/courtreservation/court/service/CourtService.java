@@ -17,5 +17,7 @@ public interface CourtService {
 
   CourtDto update(Long id, CourtDto dto);
 
+  CourtDto updateActive(Long id, boolean active);
+
   void delete(Long id);
 }
