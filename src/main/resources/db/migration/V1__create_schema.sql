@@ -10,7 +10,17 @@ CREATE TABLE IF NOT EXISTS court (
     court_capacity INTEGER NOT NULL,
     court_sport_id BIGINT NOT NULL,
     court_price NUMERIC(10, 2) NOT NULL,
+    court_active BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT fk_court_sport FOREIGN KEY (court_sport_id) REFERENCES sport (sport_id)
+);
+
+CREATE TABLE IF NOT EXISTS maintenance_block (
+    maintenance_block_id BIGSERIAL PRIMARY KEY,
+    maintenance_block_court_id BIGINT NOT NULL,
+    maintenance_block_start_date DATE NOT NULL,
+    maintenance_block_end_date DATE NOT NULL,
+    maintenance_block_reason VARCHAR(500),
+    CONSTRAINT fk_maintenance_block_court FOREIGN KEY (maintenance_block_court_id) REFERENCES court (court_id)
 );
 
 CREATE TABLE IF NOT EXISTS schedule (
