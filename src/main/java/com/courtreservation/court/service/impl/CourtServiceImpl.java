@@ -35,8 +35,7 @@ public class CourtServiceImpl implements CourtService {
 
   @Override
   public List<CourtDto> findAvailableCourts(LocalDate date) {
-    System.out.println(date.getDayOfWeek());
-    return courtRepository.findCourtsWithScheduleByDay(date.getDayOfWeek().name()).stream().map(courtMapper::toDto).toList();
+    return courtRepository.findCourtsWithScheduleByDay(date.getDayOfWeek().name(), date).stream().map(courtMapper::toDto).toList();
   }
 
   @Override
@@ -47,7 +46,9 @@ public class CourtServiceImpl implements CourtService {
   @Override
   public CourtDto create(CreateCourtDto dto) {
     Sport sport = getSportOrThrow(dto.getCourtSportId());
-    Court saved = courtRepository.save(courtMapper.toEntity(dto, sport));
+    Court court = courtMapper.toEntity(dto, sport);
+    court.setActive(Boolean.TRUE);
+    Court saved = courtRepository.save(court);
     return courtMapper.toDto(saved);
   }
 
@@ -59,6 +60,13 @@ public class CourtServiceImpl implements CourtService {
     court.setCapacity(dto.getCourtCapacity());
     court.setPrice(dto.getCourtPrice());
     court.setSport(getSportOrThrow(dto.getCourtSportId()));
+    return courtMapper.toDto(courtRepository.save(court));
+  }
+
+  @Override
+  public CourtDto updateActive(Long id, boolean active) {
+    Court court = getCourtOrThrow(id);
+    court.setActive(active);
     return courtMapper.toDto(courtRepository.save(court));
   }
 

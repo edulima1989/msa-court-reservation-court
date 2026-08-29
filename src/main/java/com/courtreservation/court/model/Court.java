@@ -1,5 +1,6 @@
 package com.courtreservation.court.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,6 +51,14 @@ public class Court {
   private BigDecimal price;
 
   @Builder.Default
-  @OneToMany(mappedBy = "court", fetch = FetchType.LAZY)
+  @Column(name = "court_active", nullable = false)
+  private Boolean active = Boolean.TRUE;
+
+  @Builder.Default
+  @OneToMany(mappedBy = "court", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Schedule> schedules = new ArrayList<>();
+
+  @Builder.Default
+  @OneToMany(mappedBy = "court", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<MaintenanceBlock> maintenanceBlocks = new ArrayList<>();
 }

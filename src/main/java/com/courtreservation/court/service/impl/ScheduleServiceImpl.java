@@ -39,6 +39,7 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public ScheduleDto create(CreateScheduleDto dto) {
     Court court = getCourtOrThrow(dto.getScheduleCourtId());
+    ensureNoScheduleForDay(court.getId(), dto.getScheduleDay());
     Schedule saved = scheduleRepository.save(scheduleMapper.toEntity(dto, court));
     return scheduleMapper.toDto(saved);
   }
@@ -46,11 +47,25 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public ScheduleDto update(Long id, ScheduleDto dto) {
     Schedule schedule = getScheduleOrThrow(id);
+    Court court = getCourtOrThrow(dto.getScheduleCourtId());
+    ensureNoScheduleForDay(court.getId(), dto.getScheduleDay(), id);
     schedule.setDay(dto.getScheduleDay());
-    schedule.setCourt(getCourtOrThrow(dto.getScheduleCourtId()));
+    schedule.setCourt(court);
     schedule.setStart(dto.getScheduleStart());
     schedule.setEnd(dto.getScheduleEnd());
     return scheduleMapper.toDto(scheduleRepository.save(schedule));
+  }
+
+  private void ensureNoScheduleForDay(Long courtId, String day) {
+    if (scheduleRepository.existsByCourt_IdAndDayIgnoreCase(courtId, day)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un horario para ese día en esta cancha");
+    }
+  }
+
+  private void ensureNoScheduleForDay(Long courtId, String day, Long excludingScheduleId) {
+    if (scheduleRepository.existsByCourt_IdAndDayIgnoreCaseAndIdNot(courtId, day, excludingScheduleId)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un horario para ese día en esta cancha");
+    }
   }
 
   @Override

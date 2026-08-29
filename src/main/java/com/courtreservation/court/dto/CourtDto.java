@@ -19,5 +19,7 @@ public class CourtDto {
   private Long courtSportId;
   private SportDto courtSport;
   private BigDecimal courtPrice;
+  private Boolean courtActive;
   private List<ScheduleDto> courtSchedules;
+  private List<MaintenanceBlockDto> courtMaintenanceBlocks;
 }
